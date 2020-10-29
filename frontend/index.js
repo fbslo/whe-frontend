@@ -2,6 +2,10 @@ var deposit_account;
 var min_amount;
 var max_amount;
 var fee;
+var symbol;
+var decimals;
+var eth_method;
+var contract;
 
 function getConfig(){
   $.ajax({
@@ -13,6 +17,10 @@ function getConfig(){
       min_amount = data.minAmount
       max_amount = data.maxAmount
       fee = data.fee
+      symbol = data.token_symbol
+      decimals = data.decimals
+      eth_method = data.method
+      contract = data.contract
     },
     error : function(request,error){
         alert("Failed to get data from server :(");
@@ -36,7 +44,7 @@ async function isEthereumAddressCorrect(){
 
 function processHiveDeposit(address){
   Swal.fire({
-    text: 'How much LEO would you like to deposit?',
+    text: 'How much '+symbol+' would you like to deposit?',
     input: 'text',
   }).then(async function(result) {
     if (!isNaN(result.value)) {
@@ -44,10 +52,10 @@ function processHiveDeposit(address){
         text: 'What is you username?',
         input: 'text',
       }).then(async function(username) {
-        const amount = parseFloat(result.value).toFixed(3)
+        const amount = parseFloat(result.value).toFixed(decimals)
         if (amount > max_amount || amount < min_amount) alert("Max amount is "+max_amount+" and min amount is "+min_amount)
         else {
-          Swal.fire({text: 'You will receive a minimum of '+(Number(amount) - Number(fee) - (Number(amount) * 0.0025))+' WLEO (part of the "fee reservation"  will be refunded)!', showCancelButton: true,}).then((isConfirmed) => {
+          Swal.fire({text: 'You will receive a minimum of '+(Number(amount) - Number(fee) - (Number(amount) * 0.0025))+' W'+symbol+' (part of the fee might be refunded)!', showCancelButton: true,}).then((isConfirmed) => {
             if (isConfirmed.isConfirmed){
               if(window.hive_keychain) {
                 requestKeychain(amount, address, username.value)
@@ -67,14 +75,14 @@ function requestKeychain(amount, address, username){
     contractName: 'tokens',
     contractAction: 'transfer',
     contractPayload: {
-      symbol: "LEO",
-      to: 'wrapped-leo',
-      quantity: parseFloat(amount).toFixed(3),
+      symbol: symbol,
+      to: deposit_account,
+      quantity: parseFloat(amount).toFixed(decimals),
       memo: address
     }
   }
   json = JSON.stringify(json)
-  hive_keychain.requestCustomJson(username, 'ssc-mainnet-hive', 'Active', json, 'LEO transfer', function(response) {
+  hive_keychain.requestCustomJson(username, 'ssc-mainnet-hive', 'Active', json, symbol+' transfer', function(response) {
   	console.log(response);
   });
 }
@@ -88,62 +96,54 @@ function requestHiveSigner(amount, address){
       contractName: 'tokens',
       contractAction: 'transfer',
       contractPayload: {
-        symbol: "LEO",
-        to: 'wrapped-leo',
-        quantity: parseFloat(amount).toFixed(3),
+        symbol: symbol,
+        to: deposit_account,
+        quantity: parseFloat(amount).toFixed(decimals),
         memo: address
       }
     }
     json = JSON.stringify(json)
-    let url = `https://hivesigner.com/sign/custom-json?authority=active&required_auths=["${result.value}"]&required_posting_auths=[]&id=ssc-mainnet-hive&json=${encodeURIComponent(json)}&redirect_uri=https://wleo.io`
+    let domain = location.protocol + "//" + location.host
+    let url = `https://hivesigner.com/sign/custom-json?authority=active&required_auths=["${result.value}"]&required_posting_auths=[]&id=ssc-mainnet-hive&json=${encodeURIComponent(json)}&redirect_uri=`+domain
   	var win = window.open(url, '_blank');
     win.focus();
   })
 }
 
-function displayDetails(){
-  $.ajax({
-    url : '/create',
-    type : 'POST',
-    data: {
-      username: document.getElementById("hive").value
-    },
-    dataType:'json',
-    success : function(data) {
-      if(data.success){
-        console.log(JSON.stringify(data))
-        var html = `<div class="row">
-          <div class="col-md-2">
+async function displayDetails(){
+  let username = document.getElementById("hive").value
+  let isCorrect = await verifyHiveUsername(username)
+  if (isCorrect != 'found') alert('Please verify your Hive username is correct!')
+  else {
+    var html = `<div class="row">
+      <div class="col-md-2">
+      </div>
+      <div class="col-md-8">
+        <div class="main-card mb-3 card">
+          <div class="card-body"><h4 class="card-title">Deposit details</h4>
+            <button class="mt-1 btn" onClick='requestMetaMask("${username}")'><img srcset="/assets/images/metamask.png 10x"></button>
           </div>
-          <div class="col-md-8">
-            <div class="main-card mb-3 card">
-              <div class="card-body"><h4 class="card-title">Deposit details</h4>
-                <p>ID: ${data.id}</p>
-                <p>Address: ${data.address} <i class="fa fa-copy" onClick="copy('${data.address}')"></i></p>
-                <p>Expiration: ${new Date(data.expiration)}</p>
-                <button class="mt-1 btn" onClick='requestMetaMask("${data.address}")'><img srcset="/assets/images/metamask.png 10x"></button>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-2">
-          </div>
-        </div>`
-        document.getElementById('deposit_data').innerHTML = html
-      } else {
-        alert("Error, please try again!")
-      }
-    },
-    error : function(request,error){
-        alert("Failed to get data from server :(");
-    }
-  });
+        </div>
+      </div>
+      <div class="col-md-2">
+      </div>
+    </div>`
+    document.getElementById('deposit_data').innerHTML = html
+  }
 }
 
-function copy(address){
-  navigator.clipboard.writeText(address);
+function verifyHiveUsername(username){
+  return new Promise((resolve, reject) => {
+    hive.api.getAccounts([username], function(err, result) {
+      if (err) resolve('error')
+      else if (result.length == 0) resolve('not_found')
+      else resolve('found')
+    });
+  })
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
+  await getConfig()
   if (localStorage.getItem("disclaimer") != 'true'){
     Swal.fire({
       title: 'Disclaimer',
@@ -163,17 +163,17 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 }, false);
 
-async function requestMetaMask(deposit_address){
+async function requestMetaMask(username){
   if (typeof window.ethereum !== 'undefined') {
     let accounts = await ethereum.request({ method: 'eth_requestAccounts' });
     const account = accounts[0];
     Swal.fire({
-      text: 'How much WHIVE would you like to send?',
+      text: 'How much W'+symbol+' would you like to send?',
       input: 'text'
     }).then(function(result) {
       if (!isNaN(result.value)) {
         const amount = parseFloat(result.value).toFixed(3)
-        sendTx(account, deposit_address, amount)
+        sendTx(account, amount, username)
       } else alert("use numbers")
     })
   } else {
@@ -181,29 +181,34 @@ async function requestMetaMask(deposit_address){
   }
 }
 
-async function sendTx(account, deposit_address, amount){
+async function sendTx(account, amount, username){
+  await getConfig()
+  let function_name = 'convertTokenWithBurn';
+  if (eth_method == 'mint') function_name = 'convertTokenWithBurn'
+  if (eth_method == 'transfer') function_name = 'convertTokenWithTransfer'
   let abiArray = await getAbiArray()
   const Web3 = window.Web3;
   const web3 = new Web3(window.web3.currentProvider);
-  var contract = new web3.eth.Contract(abiArray, '0x352c0f76cfd34ab3a2724ef67f46cf4d3f61192b');
-  const contractFunction = contract.methods.transfer(deposit_address, amount * 1000);
+  var contractObject = new web3.eth.Contract(abiArray, contract);
+  const contractFunction = contractObject.methods[function_name](amount * Math.pow(10, decimals), username);
   const functionAbi = contractFunction.encodeABI();
   const transactionParameters = {
     nonce: '0x00', // ignored by MetaMask
-    to: '0x352c0f76cfd34ab3a2724ef67f46cf4d3f61192b', // Required except during contract publications.
+    to: contract, // Required except during contract publications.
     from: account, // must match user's active address.
     data: functionAbi, // Optional, but used for defining smart contract creation and interaction.
     chainId: 1, // Used to prevent transaction reuse across blockchains. Auto-filled by MetaMask.
   };
-
+  console.log(transactionParameters, contract)
   // txHash is a hex string
   // As with any RPC call, it may throw an error
   const txHash = await ethereum.request({
     method: 'eth_sendTransaction',
     params: [transactionParameters],
   });
+  alert(txHash)
 }
 
 function getAbiArray(){
-  return [{"constant":true,"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"value","type":"uint256"}],"name":"approve","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"value","type":"uint256"}],"name":"transferFrom","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"decimals","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"addedValue","type":"uint256"}],"name":"increaseAllowance","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[],"name":"unpause","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"account","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"mint","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"burn","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"isPauser","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"paused","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"renouncePauser","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"account","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"burnFrom","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"addPauser","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[],"name":"pause","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"addMinter","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[],"name":"renounceMinter","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"subtractedValue","type":"uint256"}],"name":"decreaseAllowance","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"value","type":"uint256"}],"name":"transfer","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"isMinter","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"address","name":"spender","type":"address"}],"name":"allowance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"inputs":[],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"account","type":"address"}],"name":"MinterAdded","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"account","type":"address"}],"name":"MinterRemoved","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"account","type":"address"}],"name":"Paused","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"account","type":"address"}],"name":"Unpaused","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"account","type":"address"}],"name":"PauserAdded","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"account","type":"address"}],"name":"PauserRemoved","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"spender","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Approval","type":"event"}]
+  return [{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"spender","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"account","type":"address"}],"name":"MinterAdded","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"account","type":"address"}],"name":"MinterRemoved","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"account","type":"address"}],"name":"Paused","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"account","type":"address"}],"name":"PauserAdded","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"account","type":"address"}],"name":"PauserRemoved","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"account","type":"address"}],"name":"Unpaused","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"},{"indexed":false,"internalType":"string","name":"username","type":"string"}],"name":"convertToken","type":"event"},{"constant":false,"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"addMinter","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"addPauser","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"address","name":"spender","type":"address"}],"name":"allowance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"value","type":"uint256"}],"name":"approve","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"account","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"string","name":"username","type":"string"}],"name":"convertTokenFromWithBurn","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"string","name":"username","type":"string"}],"name":"convertTokenWithBurn","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"string","name":"username","type":"string"}],"name":"convertTokenWithTransfer","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"decimals","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"subtractedValue","type":"uint256"}],"name":"decreaseAllowance","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"addedValue","type":"uint256"}],"name":"increaseAllowance","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"isMinter","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"isOwner","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"isPauser","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"account","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"mint","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"pause","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"paused","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"removeMinter","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"removePauser","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[],"name":"renounceMinter","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[],"name":"renounceOwnership","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[],"name":"renouncePauser","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"value","type":"uint256"}],"name":"transfer","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"value","type":"uint256"}],"name":"transferFrom","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[],"name":"unpause","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"}]
 }

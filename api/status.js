@@ -17,7 +17,10 @@ router.get("/", async (req, res) => {
     fee: await getFee(),
     hive_token_balance: await getBalance(),
     eth_token_balance: await getSupply(),
-    token_price_in_eth: await getHETokenPriceInEth() 
+    token_price_in_eth: await getHETokenPriceInEth(),
+    token_symbol: process.env.TOKEN_SYMBOL,
+    decimals: process.env.HIVE_TOKEN_PRECISION,
+    method: process.env.ETHEREUM_CONTRACT_FUNCTION
   })
 })
 
