@@ -29,13 +29,8 @@ app.use(limiter);
 app.set('view engine', 'ejs');
 
 var tokenPlatforms = ''
-var platformConfig = [
-  {
-    url: "https://url.com",
-    name: "platform",
-    fa_icon: "fa-home"
-  }
-]
+var platformConfig = require("./platforms.json").platforms
+
 function prepareTokenPlatforms(){
   tokenPlatforms = ''
   for (i in platformConfig){

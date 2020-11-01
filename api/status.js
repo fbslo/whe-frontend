@@ -54,7 +54,7 @@ async function caculateTransactionFee(contract, address, amount, gasPrice){
   return new Promise(async (resolve, reject) => {
     let contractFunction = contract.methods[process.env.ETHEREUM_CONTRACT_FUNCTION](address, amount);
     let estimatedGas = await contractFunction.estimateGas({ from: process.env.ETHEREUM_ADDRESS });
-    let wei = estimatedGas * gasPrice * 1000000000
+    let wei = parseFloat(estimatedGas * gasPrice * 1000000000).toFixed(0)
     let etherValue = Web3.utils.fromWei(wei.toString(), 'ether');
     resolve({
       etherValue: etherValue,
