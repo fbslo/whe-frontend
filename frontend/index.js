@@ -206,7 +206,7 @@ async function sendTx(account, amount, username){
     method: 'eth_sendTransaction',
     params: [transactionParameters],
   });
-  alert(txHash)
+  alert("Transaction sent! Please note it will be processed after 12 confirmations. Hash: "+ txHash)
 }
 
 function getAbiArray(){
