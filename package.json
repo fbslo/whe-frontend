@@ -4,11 +4,15 @@
   "description": "Wrapped Hive Engine tokens frontend",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "install_cli": "npm install -g ."
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/fbslo/whe-frontend.git"
+  },
+  "bin": {
+    "frontend": "./bin/index.js"
   },
   "keywords": [
     "hive",
