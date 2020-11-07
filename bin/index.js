@@ -32,7 +32,16 @@ switch(command) {
 }
 
 function status(){
-  console.log(`Oracle frontend status:`, list[0].pm2_env.status.toUpperCase())
+  pm2.list('frontend', (err, data) => {
+    if (err) console.log(err)
+    else {
+      let id = 0
+      for (i in data){
+        if (data[i].name == 'frontend') id = data[i].pm_id
+      }
+      console.log(`Oracle frontend status:`, data[id].pm2_env.status.toUpperCase())
+    }
+  })
 }
 
 function help(){
@@ -42,13 +51,17 @@ function help(){
 function logs(){
   pm2.list('frontend', (err, data) => {
     if(err) console.log(err);
-    console.log(data[0].pm2_env.pm_out_log_path)
-    console.log(data[0].pm2_env.pm_err_log_path)
+    let id = 0
+    for (i in data){
+      if (data[i].name == 'frontend') id = data[i].pm_id
+    }
+    console.log(data[id].pm2_env.pm_out_log_path)
+    console.log(data[id].pm2_env.pm_err_log_path)
     let logs = ''
-    readLastLines.read(data[0].pm2_env.pm_err_log_path, 15)
+    readLastLines.read(data[id].pm2_env.pm_err_log_path, 15)
       .then((lines) => {
         logs += lines
-        return readLastLines.read(data[0].pm2_env.pm_out_log_path, 15)
+        return readLastLines.read(data[id].pm2_env.pm_out_log_path, 15)
       })
       .then((lines) => {
         logs += lines
