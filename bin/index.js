@@ -36,7 +36,7 @@ function status(){
 }
 
 function help(){
-  console.log(`Commands: \n\nstart \nstop \nrestart \nlogs \nstatus\n\nUse: oracle command`)
+  console.log(`Commands: \n\nstart \nstop \nrestart \nlogs \nstatus\n\nUse: frontend command`)
 }
 
 function logs(){
@@ -53,14 +53,14 @@ function logs(){
       .then((lines) => {
         logs += lines
         console.log(logs)
-        console.log("\nFor live logs, please use command: pm2 logs oracle")
+        console.log("\nFor live logs, please use command: pm2 logs frontend")
         process.exit(0)
       })
   })
 }
 
 function start(){
-  pm2.start('frontend', (err, proc) => {
+  pm2.start('index.js', {name: 'frontend'}, (err, proc) => {
     if (err) console.log(err)
     else {
       console.log(`Starting the oracle...`);
