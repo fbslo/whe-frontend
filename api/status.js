@@ -32,7 +32,11 @@ async function getSupply(){
   } else {
     let contract = new web3.eth.Contract(tokenABI.ABI, process.env.ETHEREUM_CONTRACT_ADDRESS);
     let totalSupply = await contract.methods.totalSupply().call()
-    let teamTokens = await contract.methods.balanceOf(process.env.ETHEREUM_ADDRESS).call()
+    let teamTokens = 0
+    let addresses = process.env.OTHER_ADDRESSES.split(",")
+    for (i in addresses){
+      teamTokens += await contract.methods.balanceOf(addresses[i]).call()
+    }
     return (totalSupply - teamTokens) / 10**process.env.HIVE_TOKEN_PRECISION;
   }
 }
