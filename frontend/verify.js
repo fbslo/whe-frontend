@@ -35,7 +35,8 @@ function getPrice(balance, priceInEth, eth_balance){
     type : 'GET',
     dataType:'json',
     success : function(data) {
-      let value = (data.market_data.current_price.usd * priceInEth * eth_balance).toString().split(".")
+      let value = (data.market_data.current_price.usd * priceInEth * eth_balance).toString()
+      value = parseFloat(value).toFixed(3).split(".")
       document.getElementById("price").innerHTML =numberWithCommas(value[0]) + '<small>.'+value[1].slice(0, 3)+'</small>'
     },
     error : function(request,error){

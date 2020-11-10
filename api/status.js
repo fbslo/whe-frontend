@@ -16,7 +16,7 @@ router.get("/", async (req, res) => {
     contract: process.env.ETHEREUM_CONTRACT_ADDRESS,
     fee: await getFee(),
     hive_token_balance: await getBalance(),
-    eth_token_balance: await getSupply(),
+    eth_token_balance: parseFloat(await getSupply()).toFixed(process.env.ETHEREUM_TOKEN_PRECISION),
     token_price_in_eth: await getHETokenPriceInEth(),
     token_symbol: process.env.TOKEN_SYMBOL,
     decimals: process.env.HIVE_TOKEN_PRECISION,
@@ -35,7 +35,7 @@ async function getSupply(){
     let teamTokens = 0
     let addresses = process.env.OTHER_ADDRESSES.split(",")
     for (i in addresses){
-      teamTokens += await contract.methods.balanceOf(addresses[i]).call()
+      teamTokens += Number(await contract.methods.balanceOf(addresses[i]).call())
     }
     return (totalSupply - teamTokens) / 10**process.env.HIVE_TOKEN_PRECISION;
   }
