@@ -98,7 +98,8 @@ function getBalance(){
       "id": 1
     })
     .then(function (response) {
-      resolve(Number(response.data.result[0].balance))
+      if (response.data.result.length == 0) resolve(0)
+      else resolve(Number(response.data.result[0].balance))
     })
     .catch(function (error) {
       resolve('error')
