@@ -42,20 +42,21 @@ async function isEthereumAddressCorrect(){
   }
 }
 
-function processHiveDeposit(address){
+async function processHiveDeposit(address){
+  let symbol = document.getElementById("symbol").innerText
   Swal.fire({
     text: 'How much '+symbol+' would you like to deposit?',
     input: 'text',
   }).then(async function(result) {
     if (!isNaN(result.value)) {
       Swal.fire({
-        text: 'What is you username?',
+        text: 'What is your username?',
         input: 'text',
       }).then(async function(username) {
         const amount = parseFloat(result.value).toFixed(decimals)
         if (amount > max_amount || amount < min_amount) alert("Max amount is "+max_amount+" and min amount is "+min_amount)
         else {
-          Swal.fire({text: 'You will receive a minimum of '+(Number(amount) - Number(fee) - (Number(amount) * 0.0025))+' W'+symbol+' (part of the fee might be refunded)!', showCancelButton: true,}).then((isConfirmed) => {
+          Swal.fire({text: 'You will receive a minimum of '+(Number(amount) - Number(fee) - (Number(amount) * 0.0025))+' W'+symbol+' (part of the fee might be refunded)! If amount is less than 0, it will be refunded.', showCancelButton: true,}).then((isConfirmed) => {
             if (isConfirmed.isConfirmed){
               if(window.hive_keychain) {
                 requestKeychain(amount, address, username.value)
@@ -88,6 +89,7 @@ function requestKeychain(amount, address, username){
 }
 
 function requestHiveSigner(amount, address){
+  let symbol = document.getElementById("symbol").innerText
   Swal.fire({
     text: 'What is you HIVE username?',
     input: 'text'
@@ -164,6 +166,7 @@ function verifyHiveUsername(username){
 // }, false);
 
 async function requestMetaMask(username){
+  let symbol = document.getElementById("symbol").innerText
   if (typeof window.ethereum !== 'undefined') {
     let accounts = await ethereum.request({ method: 'eth_requestAccounts' });
     const account = accounts[0];
@@ -183,6 +186,7 @@ async function requestMetaMask(username){
 
 async function sendTx(account, amount, username){
   await getConfig()
+  let decimals = document.getElementById("tokenDecimals").innerText
   let function_name = 'convertTokenWithBurn';
   if (eth_method == 'mint') function_name = 'convertTokenWithBurn'
   if (eth_method == 'transfer') function_name = 'convertTokenWithTransfer'
@@ -190,7 +194,9 @@ async function sendTx(account, amount, username){
   const Web3 = window.Web3;
   const web3 = new Web3(window.web3.currentProvider);
   var contractObject = new web3.eth.Contract(abiArray, contract);
-  const contractFunction = contractObject.methods[function_name](amount * Math.pow(10, decimals), username);
+  let tokenAmount = amount * Math.pow(10, decimals)
+  console.log(amount, decimals)
+  const contractFunction = contractObject.methods[function_name](tokenAmount, username);
   const functionAbi = contractFunction.encodeABI();
   const transactionParameters = {
     nonce: '0x00', // ignored by MetaMask
