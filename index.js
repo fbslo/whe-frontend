@@ -51,7 +51,8 @@ app.get('/', async (req, res) => {
     tokenDecimals: process.env.HIVE_TOKEN_PRECISION,
     tokenContractAddress: process.env.ETHEREUM_CONTRACT_ADDRESS,
     tokenPlatforms: tokenPlatforms,
-    color: process.env.COLOR
+    color: process.env.COLOR,
+    functionName: process.env.ETHEREUM_CONTRACT_FUNCTION
   })
 })
 

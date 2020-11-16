@@ -186,6 +186,7 @@ async function requestMetaMask(username){
 
 async function sendTx(account, amount, username){
   await getConfig()
+  let eth_method = document.getElementById("function").innerText
   let decimals = document.getElementById("tokenDecimals").innerText
   let function_name = 'convertTokenWithBurn';
   if (eth_method == 'mint') function_name = 'convertTokenWithBurn'
