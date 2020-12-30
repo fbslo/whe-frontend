@@ -189,6 +189,7 @@ async function sendTx(account, amount, username){
   let eth_method = document.getElementById("function").innerText
   let decimals = document.getElementById("tokenDecimals").innerText
   let function_name = 'convertTokenWithBurn';
+  if (!contract) contract = '0x73A9fb46e228628f8f9BB9004eCa4f4F529D3998' //LEO contract
   if (eth_method == 'mint') function_name = 'convertTokenWithBurn'
   if (eth_method == 'transfer') function_name = 'convertTokenWithTransfer'
   let abiArray = await getAbiArray()
