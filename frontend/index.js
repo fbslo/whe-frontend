@@ -189,6 +189,7 @@ async function sendTx(account, amount, username){
   let eth_method = document.getElementById("function").innerText
   let decimals = document.getElementById("tokenDecimals").innerText
   let function_name = 'convertTokenWithBurn';
+  let contract = document.getElementById('contract').value
   if (!contract) contract = '0x73A9fb46e228628f8f9BB9004eCa4f4F529D3998' //LEO contract
   if (eth_method == 'mint') function_name = 'convertTokenWithBurn'
   if (eth_method == 'transfer') function_name = 'convertTokenWithTransfer'
@@ -206,6 +207,7 @@ async function sendTx(account, amount, username){
     from: account, // must match user's active address.
     data: functionAbi, // Optional, but used for defining smart contract creation and interaction.
     chainId: 1, // Used to prevent transaction reuse across blockchains. Auto-filled by MetaMask.
+    gas: '0x186A0'
   };
   console.log(transactionParameters, contract)
   // txHash is a hex string
