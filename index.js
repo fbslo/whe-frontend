@@ -83,6 +83,46 @@ app.get('/faq', async (req, res) => {
   })
 })
 
+app.get('/bsc', async (req, res) => {
+  await prepareTokenPlatforms()
+  res.render('index_bsc', {
+    tokenName: process.env.TOKEN_NAME,
+    tokenSymbol: process.env.TOKEN_SYMBOL,
+    tokenDecimals: process.env.HIVE_TOKEN_PRECISION,
+    tokenContractAddress: process.env.BSC_CONTRACT_ADDRESS,
+    tokenPlatforms: tokenPlatforms,
+    color: process.env.COLOR,
+    functionName: process.env.ETHEREUM_CONTRACT_FUNCTION
+  })
+})
+
+app.get('/bsc/verify', async (req, res) => {
+  await prepareTokenPlatforms()
+  res.render('verify_bsc', {
+    tokenName: process.env.TOKEN_NAME,
+    tokenSymbol: process.env.TOKEN_SYMBOL,
+    tokenDecimals: process.env.HIVE_TOKEN_PRECISION,
+    tokenContractAddress: process.env.BSC_CONTRACT_ADDRESS,
+    tokenPlatforms: tokenPlatforms,
+    hiveDepositAddress: process.env.HIVE_ACCOUNT_BSC,
+    color: process.env.COLOR
+  })
+})
+
+app.get('/bsc/faq', async (req, res) => {
+  await prepareTokenPlatforms()
+  res.render('faq_bsc', {
+    tokenName: process.env.TOKEN_NAME,
+    tokenSymbol: process.env.TOKEN_SYMBOL,
+    tokenDecimals: process.env.HIVE_TOKEN_PRECISION,
+    tokenContractAddress: process.env.BSC_CONTRACT_ADDRESS,
+    tokenPlatforms: tokenPlatforms,
+    hiveDepositAddress: process.env.HIVE_ACCOUNT_BSC,
+    contactLink: process.env.CONTACT_LINK,
+    color: process.env.COLOR
+  })
+})
+
 app.use('/price', require('./api/price.js'))
 app.use('/status', require('./api/status.js'));
 

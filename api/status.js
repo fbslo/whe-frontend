@@ -15,7 +15,7 @@ router.get("/", async (req, res) => {
     maxAmount: Number(process.env.MAX_AMOUNT),
     contract: process.env.ETHEREUM_CONTRACT_ADDRESS,
     fee: await getFee(),
-    hive_token_balance: await getBalance(),
+    hive_token_balance: parseFloat(await getBalance()).toFixed(process.env.HIVE_TOKEN_PRECISION),
     eth_token_balance: parseFloat(await getSupply()).toFixed(process.env.ETHEREUM_TOKEN_PRECISION),
     token_price_in_eth: await getHETokenPriceInEth(),
     token_symbol: process.env.TOKEN_SYMBOL,
