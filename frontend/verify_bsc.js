@@ -47,7 +47,7 @@ async function getTokenSupply(){
   let coldWallet = await contract.methods.balanceOf('0x78e343ce8ba855795685c862245642daeffa048d').call() / 1000
   let hotWallet = await contract.methods.balanceOf('0x56687402dd89d03ee4cabf8a605f020aa0ef780a').call() / 1000
   let supply = await contract.methods.totalSupply().call() / 1000
-  let result = parseFloat(supply).toFixed(3)
+  let result = parseFloat(supply - coldWallet - hotWallet).toFixed(3)
   let number = result.split('.')
   document.getElementById('whive_balance').innerHTML = numberWithCommas(number[0]) + '<small>.'+number[1].split(" ")[0]+'</small>'
   getPrice(result)
