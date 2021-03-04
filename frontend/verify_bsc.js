@@ -44,6 +44,8 @@ function getPrice(balance){
 async function getTokenSupply(){
   let web3 = new Web3('https://bsc-dataseed.binance.org/')
   let contract = new web3.eth.Contract(abi, '0x6421531af54c7b14ea805719035ebf1e3661c44a');
+  let coldWallet = await contract.methods.balanceOf('0x78e343ce8ba855795685c862245642daeffa048d').call() / 1000
+  let hotWallet = await contract.methods.balanceOf('0x56687402dd89d03ee4cabf8a605f020aa0ef780a').call() / 1000
   let supply = await contract.methods.totalSupply().call() / 1000
   let result = parseFloat(supply).toFixed(3)
   let number = result.split('.')

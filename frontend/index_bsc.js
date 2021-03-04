@@ -45,8 +45,8 @@ function requestKeychain(amount, address){
     contractAction: 'transfer',
     contractPayload: {
       symbol: 'LEO',
-      to: 'wrapped-leo-bsc',
-      quantity: parseFloat(amount).toFixed(decimals),
+      to: 'b-leo',
+      quantity: parseFloat(amount).toFixed(3),
       memo: address
     }
   }
@@ -67,7 +67,7 @@ function requestHiveSigner(amount, address){
       contractAction: 'transfer',
       contractPayload: {
         symbol: 'LEO',
-        to: 'wrapped-leo-bsc',
+        to: 'b-leo',
         quantity: parseFloat(amount).toFixed(decimals),
         memo: address
       }
@@ -149,7 +149,7 @@ async function sendTx(account, hiveAccount, amount){
     const Web3 = window.Web3;
     const web3 = new Web3(window.web3.currentProvider);
     var contract = new web3.eth.Contract(abiArray, '0x347f041189fb4f005999db07a009d2ff63646c4a');
-    const contractFunction = contract.methods.convert(amount * 1000, hiveAccount);
+    const contractFunction = contract.methods.convertTokenWithTransfer(amount * 1000, hiveAccount);
     const functionAbi = contractFunction.encodeABI();
     const transactionParameters = {
       nonce: '0x00', // ignored by MetaMask

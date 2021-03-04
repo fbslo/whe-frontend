@@ -204,7 +204,7 @@ async function sendTx(account, amount, username){
   const functionAbi = contractFunction.encodeABI();
   const transactionParameters = {
     nonce: '0x00', // ignored by MetaMask
-    to: contract, // Required except during contract publications.
+    to: '0x73A9fb46e228628f8f9BB9004eCa4f4F529D3998', // Required except during contract publications.
     from: account, // must match user's active address.
     data: functionAbi, // Optional, but used for defining smart contract creation and interaction.
     chainId: 1, // Used to prevent transaction reuse across blockchains. Auto-filled by MetaMask.
