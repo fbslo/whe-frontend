@@ -1,6 +1,6 @@
 async function getBalance(){
-  let account = 'wrapped-hive-bsc'
-  let contract = '0x347f041189fb4f005999db07a009d2ff63646c4a'
+  let account = 'b-leo'
+  let contract = '0x6421531af54c7b14ea805719035ebf1e3661c44a'
   hive.api.getAccounts([account], function(err, result) {
     if (err) alert("Error getting data!")
     else {
@@ -18,7 +18,7 @@ function numberWithCommas(x) {
 }
 
 function ethBalance(contract){
-  let address = '0x347f041189fb4f005999db07a009d2ff63646c4a'
+  let address = '0x6421531af54c7b14ea805719035ebf1e3661c44a'
   document.getElementById('eth_addresses').innerHTML += '<li class="list-group-item"><a href="https://bscscan.com/address/'+address+'" target="_blank">'+address+'</a></li>'
 }
 
@@ -43,7 +43,7 @@ function getPrice(balance){
 
 async function getTokenSupply(){
   let web3 = new Web3('https://bsc-dataseed.binance.org/')
-  let contract = new web3.eth.Contract(abi, '0x347f041189fb4f005999db07a009d2ff63646c4a');
+  let contract = new web3.eth.Contract(abi, '0x6421531af54c7b14ea805719035ebf1e3661c44a');
   let supply = await contract.methods.totalSupply().call() / 1000
   let result = parseFloat(supply).toFixed(3)
   let number = result.split('.')
