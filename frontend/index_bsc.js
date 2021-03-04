@@ -25,7 +25,7 @@ function processHiveDeposit(address){
       const amount = parseFloat(result.value).toFixed(3)
       if (amount > max_amount || amount < min_amount) alert("Max amount is "+max_amount+" and min amount is "+min_amount)
       else {
-        Swal.fire({text: 'You will receive '+(Number(amount) - 1)+'BLE (1 LEO transaction fee)!', showCancelButton: true,}).then((isConfirmed) => {
+        Swal.fire({text: 'You will receive '+(Number(amount) - 1)+'bLEO (1 LEO transaction fee)!', showCancelButton: true,}).then((isConfirmed) => {
           if (isConfirmed.isConfirmed){
             if(window.hive_keychain) {
               requestKeychain(amount, address)
@@ -148,12 +148,12 @@ async function sendTx(account, hiveAccount, amount){
   } else {
     const Web3 = window.Web3;
     const web3 = new Web3(window.web3.currentProvider);
-    var contract = new web3.eth.Contract(abiArray, '0x347f041189fb4f005999db07a009d2ff63646c4a');
+    var contract = new web3.eth.Contract(abiArray, '0x6421531af54c7b14ea805719035ebf1e3661c44a');
     const contractFunction = contract.methods.convertTokenWithTransfer(amount * 1000, hiveAccount);
     const functionAbi = contractFunction.encodeABI();
     const transactionParameters = {
       nonce: '0x00', // ignored by MetaMask
-      to: '0x347f041189fb4f005999db07a009d2ff63646c4a', // Required except during contract publications.
+      to: '0x6421531af54c7b14ea805719035ebf1e3661c44a', // Required except during contract publications.
       from: account, // must match user's active address.
       data: functionAbi, // Optional, but used for defining smart contract creation and interaction.
       chainId: 56, // Used to prevent transaction reuse across blockchains. Auto-filled by MetaMask.
