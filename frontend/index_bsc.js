@@ -25,7 +25,7 @@ function processHiveDeposit(address){
       const amount = parseFloat(result.value).toFixed(3)
       if (amount > max_amount || amount < min_amount) alert("Max amount is "+max_amount+" and min amount is "+min_amount)
       else {
-        Swal.fire({text: 'You will receive '+(Number(amount) - 1)+'bLEO (1 LEO transaction fee)!', showCancelButton: true,}).then((isConfirmed) => {
+        Swal.fire({text: 'You will receive '+(Number(amount) - 1)+' bLEO (1 LEO transaction fee)!', showCancelButton: true,}).then((isConfirmed) => {
           if (isConfirmed.isConfirmed){
             if(window.hive_keychain) {
               requestKeychain(amount, address)
@@ -39,7 +39,7 @@ function processHiveDeposit(address){
   })
 }
 
-function requestKeychain(amount, address){
+function requestHiveSigner(amount, address){
   let json = {
     contractName: 'tokens',
     contractAction: 'transfer',
@@ -51,12 +51,18 @@ function requestKeychain(amount, address){
     }
   }
   json = JSON.stringify(json)
-  hive_keychain.requestCustomJson(username, 'ssc-mainnet-hive', 'Active', json, symbol+' transfer', function(response) {
-    console.log(response);
+  let domain = location.protocol + "//" + location.host
+  Swal.fire({
+    text: 'What is you HIVE username?',
+    input: 'text'
+  }).then(function(result) {
+    let url = `https://hivesigner.com/sign/custom-json?authority=active&required_auths=["${result.value}"]&required_posting_auths=[]&id=ssc-mainnet-hive&json=${encodeURIComponent(json)}&redirect_uri=`+domain
+    var win = window.open(url, '_blank');
+    win.focus();
   })
 }
 
-function requestHiveSigner(amount, address){
+function requestKeychain(amount, address){
   let symbol = document.getElementById("symbol").innerText
   Swal.fire({
     text: 'What is you HIVE username?',
@@ -68,15 +74,14 @@ function requestHiveSigner(amount, address){
       contractPayload: {
         symbol: 'LEO',
         to: 'b-leo',
-        quantity: parseFloat(amount).toFixed(decimals),
+        quantity: parseFloat(amount).toFixed(3),
         memo: address
       }
     }
     json = JSON.stringify(json)
-    let domain = location.protocol + "//" + location.host
-    let url = `https://hivesigner.com/sign/custom-json?authority=active&required_auths=["${result.value}"]&required_posting_auths=[]&id=ssc-mainnet-hive&json=${encodeURIComponent(json)}&redirect_uri=`+domain
-  	var win = window.open(url, '_blank');
-    win.focus();
+    hive_keychain.requestCustomJson(result, 'ssc-mainnet-hive', 'Active', json, symbol+' transfer', function(response) {
+      console.log(response);
+    })
   })
 }
 
