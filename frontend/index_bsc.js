@@ -79,7 +79,7 @@ function requestKeychain(amount, address){
       }
     }
     json = JSON.stringify(json)
-    hive_keychain.requestCustomJson(result, 'ssc-mainnet-hive', 'Active', json, symbol+' transfer', function(response) {
+    hive_keychain.requestCustomJson(result.value, 'ssc-mainnet-hive', 'Active', json, symbol+' transfer', function(response) {
       console.log(response);
     })
   })
