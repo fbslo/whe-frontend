@@ -1,16 +1,28 @@
 async function getBalance(){
   let account = 'b-leo'
   let contract = '0x6421531af54c7b14ea805719035ebf1e3661c44a'
-  hive.api.getAccounts([account], function(err, result) {
-    if (err) alert("Error getting data!")
-    else {
-      let number = result[0].balance.split('.')
-      document.getElementById("hive_balance").innerHTML = numberWithCommas(number[0]) + '<small>.'+number[1].split(" ")[0]+'</small>'
-      document.getElementById("hive_account").innerHTML = '<a href="https://hiveblocks.com/@'+account+'" target="_blank">@'+account+'</a>'
-      ethBalance(contract)
-      getTokenSupply()
-    }
-  });
+  let result[0].balance = await getConfig()
+  let number = result[0].balance.split('.')
+  document.getElementById("hive_balance").innerHTML = numberWithCommas(number[0]) + '<small>.'+number[1].split(" ")[0]+'</small>'
+  document.getElementById("hive_account").innerHTML = '<a href="https://hiveblocks.com/@'+account+'" target="_blank">@'+account+'</a>'
+  ethBalance(contract)
+  getTokenSupply()
+}
+
+function getConfig(){
+  return new Promise((resolve, reject) => {
+    $.ajax({
+      url : '/status',
+      type : 'GET',
+      dataType:'json',
+      success : function(data) {
+        resolve(data.balance2)
+      },
+      error : function(request,error){
+          alert("Failed to get data from server :(");
+      }
+    });
+  })
 }
 
 function numberWithCommas(x) {

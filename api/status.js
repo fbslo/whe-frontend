@@ -20,7 +20,8 @@ router.get("/", async (req, res) => {
     token_price_in_eth: await getHETokenPriceInEth(),
     token_symbol: process.env.TOKEN_SYMBOL,
     decimals: process.env.HIVE_TOKEN_PRECISION,
-    method: process.env.ETHEREUM_CONTRACT_FUNCTION
+    method: process.env.ETHEREUM_CONTRACT_FUNCTION,
+    balance2: await getBalance2()
   })
 })
 
@@ -93,6 +94,32 @@ function getBalance(){
         "query": {
            "symbol": process.env.TOKEN_SYMBOL,
            "account": process.env.HIVE_ACCOUNT
+        }
+      },
+      "id": 1
+    })
+    .then(function (response) {
+      if (response.data.result.length == 0) resolve(0)
+      else resolve(Number(response.data.result[0].balance))
+    })
+    .catch(function (error) {
+      resolve('error')
+      console.log(error);
+    });
+  })
+}
+
+function getBalance2(){
+  return new Promise((resolve, reject) => {
+    axios.post('https://api.hive-engine.com/rpc/contracts', {
+      "jsonrpc": "2.0",
+      "method": "find",
+      "params": {
+        "contract": "tokens",
+        "table": "balances",
+        "query": {
+           "symbol": process.env.TOKEN_SYMBOL,
+           "account": 'b-leo'
         }
       },
       "id": 1
