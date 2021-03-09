@@ -123,6 +123,19 @@ app.get('/bsc/faq', async (req, res) => {
   })
 })
 
+app.get('/cub', async (req, res) => {
+  await prepareTokenPlatforms()
+  res.render('index_cub', {
+    tokenName: process.env.TOKEN_NAME,
+    tokenSymbol: process.env.TOKEN_SYMBOL,
+    tokenDecimals: process.env.HIVE_TOKEN_PRECISION,
+    tokenContractAddress: process.env.ETHEREUM_CONTRACT_ADDRESS,
+    tokenPlatforms: tokenPlatforms,
+    color: process.env.COLOR,
+    functionName: process.env.ETHEREUM_CONTRACT_FUNCTION
+  })
+})
+
 app.use('/price', require('./api/price.js'))
 app.use('/status', require('./api/status.js'));
 
