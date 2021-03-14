@@ -1,7 +1,7 @@
 let account = document.getElementById("hive").innerText
 let contract = document.getElementById("contract").innerText
 let decimals = document.getElementById("tokenDecimals").innerText
-let coldWallet = document.getElementById("coldWallet").innerText
+let coldWalletAddress = document.getElementById("coldWallet").innerText
 let hotWalletAddress = document.getElementById("hotWallet").innerText
 
 async function getBalance(){
