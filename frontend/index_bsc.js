@@ -3,20 +3,20 @@ var min_amount;
 var max_amount;
 var fee;
 
-async function isEthereumAddressCorrect(token){
+async function isEthereumAddressCorrect(){
   var web3 = new Web3(Web3.givenProvider || "https://bsc-dataseed.binance.org/");
   try {
     let raw_address = document.getElementById("eth").value
     const address = web3.utils.toChecksumAddress(raw_address)
     document.getElementById("invalid_eth_address").innerHTML = ''
-    processHiveDeposit(address, token)
+    processHiveDeposit(address,)
   } catch(e) {
     console.error('Invalid ethereum address:', e.message)
     document.getElementById("invalid_eth_address").innerHTML = 'Please provide a valid Ethereum address.'
   }
 }
 
-function processHiveDeposit(address, token){
+function processHiveDeposit(address){
   let hiveAccount = document.getElementById("hive").innerText
   let token = document.getElementById("symbol").innerText
   Swal.fire({
