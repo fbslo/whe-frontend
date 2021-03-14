@@ -9,7 +9,7 @@ async function isEthereumAddressCorrect(){
     let raw_address = document.getElementById("eth").value
     const address = web3.utils.toChecksumAddress(raw_address)
     document.getElementById("invalid_eth_address").innerHTML = ''
-    processHiveDeposit(address,)
+    processHiveDeposit(address)
   } catch(e) {
     console.error('Invalid ethereum address:', e.message)
     document.getElementById("invalid_eth_address").innerHTML = 'Please provide a valid Ethereum address.'
