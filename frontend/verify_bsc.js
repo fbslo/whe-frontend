@@ -62,7 +62,7 @@ async function getTokenSupply(contractAddr, coldWalletAddress, hotWalletAddress,
   let contract = new web3.eth.Contract(abi, contractAddr);
   let coldWallet = await contract.methods.balanceOf(coldWalletAddress).call() / Math.pow(10, decimals)
   let hotWallet = await contract.methods.balanceOf(hotWalletAddress).call() / Math.pow(10, decimals)
-  let supply = await contract.methods.totalSupply().call() / 1000
+  let supply = await contract.methods.totalSupply().call() / Math.pow(10, decimals)
   let result = parseFloat(supply - coldWallet - hotWallet).toFixed(3)
   let number = result.split('.')
   document.getElementById('whive_balance').innerHTML = numberWithCommas(number[0]) + '<small>.'+number[1].split(" ")[0]+'</small>'
