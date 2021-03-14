@@ -149,7 +149,7 @@ async function requestMetaMask(deposit_address){
 }
 
 async function sendTx(account, hiveAccount, amount){
-  let contract = document.getElementById("contract").innerText
+  let contract_addr = document.getElementById("contract").innerText
   let abiArray = await getAbiArray()
   let chainId = await ethereum.request({ method: 'eth_chainId' });
   if (chainId != 56){
@@ -157,12 +157,12 @@ async function sendTx(account, hiveAccount, amount){
   } else {
     const Web3 = window.Web3;
     const web3 = new Web3(window.web3.currentProvider);
-    var contract = new web3.eth.Contract(abiArray, contract);
+    var contract = new web3.eth.Contract(abiArray, contract_addr);
     const contractFunction = contract.methods.convertTokenWithTransfer(amount * 1000, hiveAccount);
     const functionAbi = contractFunction.encodeABI();
     const transactionParameters = {
       nonce: '0x00', // ignored by MetaMask
-      to: contract, // Required except during contract publications.
+      to: contract_addr, // Required except during contract publications.
       from: account, // must match user's active address.
       data: functionAbi, // Optional, but used for defining smart contract creation and interaction.
       chainId: 56, // Used to prevent transaction reuse across blockchains. Auto-filled by MetaMask.
