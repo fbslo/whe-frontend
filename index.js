@@ -100,6 +100,7 @@ app.get('/bsc', async (req, res) => {
 app.get('/bsc/verify', async (req, res) => {
   await prepareTokenPlatforms()
   res.render('verify_bsc', {
+    hiveUsername: process.env.HIVE_ACCOUNT_BSC,
     tokenName: process.env.TOKEN_NAME,
     tokenSymbol: process.env.TOKEN_SYMBOL,
     tokenDecimals: process.env.HIVE_TOKEN_PRECISION,
