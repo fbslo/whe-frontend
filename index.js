@@ -107,7 +107,8 @@ app.get('/bsc/verify', async (req, res) => {
     tokenContractAddress: process.env.BSC_CONTRACT_ADDRESS,
     tokenPlatforms: tokenPlatforms,
     hiveDepositAddress: process.env.HIVE_ACCOUNT_BSC,
-    color: process.env.COLOR
+    color: process.env.COLOR,
+    functionName: process.env.ETHEREUM_CONTRACT_FUNCTION
   })
 })
 
