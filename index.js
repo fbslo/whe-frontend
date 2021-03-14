@@ -86,6 +86,7 @@ app.get('/faq', async (req, res) => {
 app.get('/bsc', async (req, res) => {
   await prepareTokenPlatforms()
   res.render('index_bsc', {
+    hiveUsername: process.env.HIVE_ACCOUNT_BSC,
     tokenName: process.env.TOKEN_NAME,
     tokenSymbol: process.env.TOKEN_SYMBOL,
     tokenDecimals: process.env.HIVE_TOKEN_PRECISION,
