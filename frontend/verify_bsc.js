@@ -1,9 +1,8 @@
 async function getBalance(){
   let account = document.getElementById("hive").innerText
   let contract = document.getElementById("contract").innerText
-  let result = []
-  let result[0].balance = await getConfig()
-  let number = result[0].balance.split('.')
+  let balance = await getConfig()
+  let number = balance.split('.')
   document.getElementById("hive_balance").innerHTML = numberWithCommas(number[0]) + '<small>.'+number[1].split(" ")[0]+'</small>'
   document.getElementById("hive_account").innerHTML = '<a href="https://hiveblocks.com/@'+account+'" target="_blank">@'+account+'</a>'
   ethBalance(contract)

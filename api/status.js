@@ -119,7 +119,7 @@ function getBalance2(){
         "table": "balances",
         "query": {
            "symbol": process.env.TOKEN_SYMBOL,
-           "account": 'b-leo'
+           "account": process.env.HIVE_ACCOUNT_BSC
         }
       },
       "id": 1
