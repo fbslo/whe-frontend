@@ -3,34 +3,35 @@ var min_amount;
 var max_amount;
 var fee;
 
-async function isEthereumAddressCorrect(){
+async function isEthereumAddressCorrect(token){
   var web3 = new Web3(Web3.givenProvider || "https://bsc-dataseed.binance.org/");
   try {
     let raw_address = document.getElementById("eth").value
     const address = web3.utils.toChecksumAddress(raw_address)
     document.getElementById("invalid_eth_address").innerHTML = ''
-    processHiveDeposit(address)
+    processHiveDeposit(address, token)
   } catch(e) {
     console.error('Invalid ethereum address:', e.message)
     document.getElementById("invalid_eth_address").innerHTML = 'Please provide a valid Ethereum address.'
   }
 }
 
-function processHiveDeposit(address){
+function processHiveDeposit(address, token){
+  let hiveAccount = document.getElementById("hive").innerText
   Swal.fire({
-    text: 'How much LEO would you like to deposit?',
+    text: 'How much '+token+' would you like to deposit?',
     input: 'text',
   }).then(async function(result) {
     if (!isNaN(result.value)) {
       const amount = parseFloat(result.value).toFixed(3)
       if (amount > max_amount || amount < min_amount) alert("Max amount is "+max_amount+" and min amount is "+min_amount)
       else {
-        Swal.fire({text: 'You will receive '+(Number(amount) - 1)+' bLEO (1 LEO transaction fee)!', showCancelButton: true,}).then((isConfirmed) => {
+        Swal.fire({text: 'You will receive '+(Number(amount) - 1)+' b'+token+' (1 '+token+' transaction fee)!', showCancelButton: true,}).then((isConfirmed) => {
           if (isConfirmed.isConfirmed){
             if(window.hive_keychain) {
-              requestKeychain(amount, address)
+              requestKeychain(amount, address, token, hiveAccount)
             } else {
-              requestHiveSigner(amount, address)
+              requestHiveSigner(amount, address, token, hiveAccount)
             }
           }
         })
@@ -39,13 +40,13 @@ function processHiveDeposit(address){
   })
 }
 
-function requestHiveSigner(amount, address){
+function requestHiveSigner(amount, address, token, hiveAccount){
   let json = {
     contractName: 'tokens',
     contractAction: 'transfer',
     contractPayload: {
-      symbol: 'LEO',
-      to: 'b-leo',
+      symbol: token,
+      to: hiveAccount,
       quantity: parseFloat(amount).toFixed(3),
       memo: address
     }
@@ -62,7 +63,7 @@ function requestHiveSigner(amount, address){
   })
 }
 
-function requestKeychain(amount, address){
+function requestKeychain(amount, address, token, hiveAccount){
   let symbol = document.getElementById("symbol").innerText
   Swal.fire({
     text: 'What is you HIVE username?',
@@ -72,8 +73,8 @@ function requestKeychain(amount, address){
       contractName: 'tokens',
       contractAction: 'transfer',
       contractPayload: {
-        symbol: 'LEO',
-        to: 'b-leo',
+        symbol: token,
+        to: hiveAccount,
         quantity: parseFloat(amount).toFixed(3),
         memo: address
       }
@@ -127,12 +128,13 @@ function copy(address){
 // }, false);
 
 async function requestMetaMask(deposit_address){
-  let hiveAccount = document.getElementById("hive").value
+  let hiveAccount = document.getElementById("hive").innerText
+  let symbol = document.getElementById("symbol").innerText
   if (typeof window.ethereum !== 'undefined') {
     let accounts = await ethereum.request({ method: 'eth_requestAccounts' });
     const account = accounts[0];
     Swal.fire({
-      text: 'How much BLEO would you like to convert?',
+      text: 'How much b'+symbol+' would you like to convert?',
       input: 'text'
     }).then(function(result) {
       if (!isNaN(result.value)) {
@@ -146,6 +148,7 @@ async function requestMetaMask(deposit_address){
 }
 
 async function sendTx(account, hiveAccount, amount){
+  let contract = document.getElementById("contract").innerText
   let abiArray = await getAbiArray()
   let chainId = await ethereum.request({ method: 'eth_chainId' });
   if (chainId != 56){
@@ -153,12 +156,12 @@ async function sendTx(account, hiveAccount, amount){
   } else {
     const Web3 = window.Web3;
     const web3 = new Web3(window.web3.currentProvider);
-    var contract = new web3.eth.Contract(abiArray, '0x6421531af54c7b14ea805719035ebf1e3661c44a');
+    var contract = new web3.eth.Contract(abiArray, contract);
     const contractFunction = contract.methods.convertTokenWithTransfer(amount * 1000, hiveAccount);
     const functionAbi = contractFunction.encodeABI();
     const transactionParameters = {
       nonce: '0x00', // ignored by MetaMask
-      to: '0x6421531af54c7b14ea805719035ebf1e3661c44a', // Required except during contract publications.
+      to: contract, // Required except during contract publications.
       from: account, // must match user's active address.
       data: functionAbi, // Optional, but used for defining smart contract creation and interaction.
       chainId: 56, // Used to prevent transaction reuse across blockchains. Auto-filled by MetaMask.
