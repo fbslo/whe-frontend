@@ -1,16 +1,16 @@
-let account = document.getElementById("hive").innerText
-let contract = document.getElementById("contract").innerText
-let decimals = document.getElementById("tokenDecimals").innerText
-let coldWalletAddress = document.getElementById("coldWallet").innerText
-let hotWalletAddress = document.getElementById("hotWallet").innerText
-
 async function getBalance(){
+  let account = document.getElementById("hiveUsername").innerText
+  let contract = document.getElementById("contract").innerText
+  let decimals = document.getElementById("tokenDecimals").innerText
+  let coldWalletAddress = document.getElementById("coldWallet").innerText
+  let hotWalletAddress = document.getElementById("hotWallet").innerText
+
   let balance = parseFloat(await getConfig()).toFixed(decimals)
   let number = balance.split('.')
   document.getElementById("hive_balance").innerHTML = numberWithCommas(number[0]) + '<small>.'+number[1].split(" ")[0]+'</small>'
   document.getElementById("hive_account").innerHTML = '<a href="https://hiveblocks.com/@'+account+'" target="_blank">@'+account+'</a>'
   ethBalance(contract)
-  getTokenSupply()
+  getTokenSupply(contract, coldWalletAddress, hotWalletAddress, decimals)
 }
 
 function getConfig(){
@@ -57,9 +57,9 @@ function getPrice(balance){
   });
 }
 
-async function getTokenSupply(){
+async function getTokenSupply(contractAddr, coldWalletAddress, hotWalletAddress, decimals){
   let web3 = new Web3('https://bsc-dataseed.binance.org/')
-  let contract = new web3.eth.Contract(abi, contract);
+  let contract = new web3.eth.Contract(abi, contractAddr);
   let coldWallet = await contract.methods.balanceOf(coldWalletAddress).call() / Math.pow(10, decimals)
   let hotWallet = await contract.methods.balanceOf(hotWalletAddress).call() / Math.pow(10, decimals)
   let supply = await contract.methods.totalSupply().call() / 1000
