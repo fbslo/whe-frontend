@@ -98,6 +98,7 @@ app.get('/bsc', async (req, res) => {
 })
 
 app.get('/bsc/verify', async (req, res) => {
+  let addresses = process.env.OTHER_ADDRESSES_BSC.split(",")
   await prepareTokenPlatforms()
   res.render('verify_bsc', {
     hiveUsername: process.env.HIVE_ACCOUNT_BSC,
@@ -108,7 +109,9 @@ app.get('/bsc/verify', async (req, res) => {
     tokenPlatforms: tokenPlatforms,
     hiveDepositAddress: process.env.HIVE_ACCOUNT_BSC,
     color: process.env.COLOR,
-    functionName: process.env.ETHEREUM_CONTRACT_FUNCTION
+    functionName: process.env.ETHEREUM_CONTRACT_FUNCTION,
+    hotWallet: addresses[0],
+    coldWallet: addresses[1]
   })
 })
 

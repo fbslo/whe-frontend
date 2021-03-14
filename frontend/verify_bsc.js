@@ -1,7 +1,10 @@
+let account = document.getElementById("hive").innerText
+let contract = document.getElementById("contract").innerText
+let decimals = document.getElementById("tokenDecimals").innerText
+let coldWallet = document.getElementById("coldWallet").innerText
+let hotWalletAddress = document.getElementById("hotWallet").innerText
+
 async function getBalance(){
-  let account = document.getElementById("hive").innerText
-  let contract = document.getElementById("contract").innerText
-  let decimals = document.getElementById("tokenDecimals").innerText
   let balance = parseFloat(await getConfig()).toFixed(decimals)
   let number = balance.split('.')
   document.getElementById("hive_balance").innerHTML = numberWithCommas(number[0]) + '<small>.'+number[1].split(" ")[0]+'</small>'
@@ -31,7 +34,7 @@ function numberWithCommas(x) {
 }
 
 function ethBalance(contract){
-  let address = '0x6421531af54c7b14ea805719035ebf1e3661c44a'
+  let address = contract
   document.getElementById('eth_addresses').innerHTML += '<li class="list-group-item"><a href="https://bscscan.com/address/'+address+'" target="_blank">'+address+'</a></li>'
 }
 
@@ -56,9 +59,9 @@ function getPrice(balance){
 
 async function getTokenSupply(){
   let web3 = new Web3('https://bsc-dataseed.binance.org/')
-  let contract = new web3.eth.Contract(abi, '0x6421531af54c7b14ea805719035ebf1e3661c44a');
-  let coldWallet = await contract.methods.balanceOf('0x78e343ce8ba855795685c862245642daeffa048d').call() / 1000
-  let hotWallet = await contract.methods.balanceOf('0x56687402dd89d03ee4cabf8a605f020aa0ef780a').call() / 1000
+  let contract = new web3.eth.Contract(abi, contract);
+  let coldWallet = await contract.methods.balanceOf(coldWalletAddress).call() / Math.pow(10, decimals)
+  let hotWallet = await contract.methods.balanceOf(hotWalletAddress).call() / Math.pow(10, decimals)
   let supply = await contract.methods.totalSupply().call() / 1000
   let result = parseFloat(supply - coldWallet - hotWallet).toFixed(3)
   let number = result.split('.')
