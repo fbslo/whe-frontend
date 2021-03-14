@@ -18,6 +18,7 @@ async function isEthereumAddressCorrect(token){
 
 function processHiveDeposit(address, token){
   let hiveAccount = document.getElementById("hive").innerText
+  let token = document.getElementById("symbol").innerText
   Swal.fire({
     text: 'How much '+token+' would you like to deposit?',
     input: 'text',
