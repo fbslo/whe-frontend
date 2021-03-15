@@ -12,7 +12,7 @@ async function isEthereumAddressCorrect(){
     processHiveDeposit(address)
   } catch(e) {
     console.error('Invalid ethereum address:', e.message)
-    document.getElementById("invalid_eth_address").innerHTML = 'Please provide a valid Ethereum address.'
+    document.getElementById("invalid_eth_address").innerHTML = 'Please provide a valid BSC address.'
   }
 }
 
@@ -129,6 +129,7 @@ function copy(address){
 // }, false);
 
 async function requestMetaMask(deposit_address){
+  let username = document.getElementById("username").value
   let hiveAccount = document.getElementById("hive").innerText
   let symbol = document.getElementById("symbol").innerText
   if (typeof window.ethereum !== 'undefined') {
@@ -140,7 +141,7 @@ async function requestMetaMask(deposit_address){
     }).then(function(result) {
       if (!isNaN(result.value)) {
         const amount = parseFloat(result.value).toFixed(3)
-        sendTx(account, hiveAccount, amount)
+        sendTx(account, hiveAccount, amount, username)
       } else alert("use numbers")
     })
   } else {
@@ -148,7 +149,7 @@ async function requestMetaMask(deposit_address){
   }
 }
 
-async function sendTx(account, hiveAccount, amount){
+async function sendTx(account, hiveAccount, amount, username){
   let contract_addr = document.getElementById("contract").innerText
   let abiArray = await getAbiArray()
   let chainId = await ethereum.request({ method: 'eth_chainId' });
@@ -158,7 +159,7 @@ async function sendTx(account, hiveAccount, amount){
     const Web3 = window.Web3;
     const web3 = new Web3(window.web3.currentProvider);
     var contract = new web3.eth.Contract(abiArray, contract_addr);
-    const contractFunction = contract.methods.convertTokenWithTransfer(amount * 1000, hiveAccount);
+    const contractFunction = contract.methods.convertTokenWithTransfer(amount * 1000, username);
     const functionAbi = contractFunction.encodeABI();
     const transactionParameters = {
       nonce: '0x00', // ignored by MetaMask
