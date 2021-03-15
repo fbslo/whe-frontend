@@ -151,6 +151,7 @@ async function requestMetaMask(deposit_address){
 
 async function sendTx(account, hiveAccount, amount, username){
   let contract_addr = document.getElementById("contract").innerText
+  let tokenDecimals = document.getElementById("tokenDecimals").innerText
   let abiArray = await getAbiArray()
   let chainId = await ethereum.request({ method: 'eth_chainId' });
   if (chainId != 56){
@@ -159,7 +160,7 @@ async function sendTx(account, hiveAccount, amount, username){
     const Web3 = window.Web3;
     const web3 = new Web3(window.web3.currentProvider);
     var contract = new web3.eth.Contract(abiArray, contract_addr);
-    const contractFunction = contract.methods.convertTokenWithTransfer(amount * 1000, username);
+    const contractFunction = contract.methods.convertTokenWithTransfer(amount * Math.pow(10, tokenDecimals), username);
     const functionAbi = contractFunction.encodeABI();
     const transactionParameters = {
       nonce: '0x00', // ignored by MetaMask
