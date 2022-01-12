@@ -123,16 +123,43 @@ app.get('/bsc/faq', async (req, res) => {
   })
 })
 
-app.get('/cub', async (req, res) => {
+app.get('/polygon', async (req, res) => {
   await prepareTokenPlatforms()
-  res.render('index_cub', {
+  res.render('index_polygon', {
     tokenName: process.env.TOKEN_NAME,
     tokenSymbol: process.env.TOKEN_SYMBOL,
     tokenDecimals: process.env.HIVE_TOKEN_PRECISION,
-    tokenContractAddress: process.env.ETHEREUM_CONTRACT_ADDRESS,
+    tokenContractAddress: process.env.POLYGON_CONTRACT_ADDRESS,
     tokenPlatforms: tokenPlatforms,
     color: process.env.COLOR,
     functionName: process.env.ETHEREUM_CONTRACT_FUNCTION
+  })
+})
+
+app.get('/polygon/verify', async (req, res) => {
+  await prepareTokenPlatforms()
+  res.render('verify_polygon', {
+    tokenName: process.env.TOKEN_NAME,
+    tokenSymbol: process.env.TOKEN_SYMBOL,
+    tokenDecimals: process.env.HIVE_TOKEN_PRECISION,
+    tokenContractAddress: process.env.POLYGON_CONTRACT_ADDRESS,
+    tokenPlatforms: tokenPlatforms,
+    hiveDepositAddress: process.env.HIVE_ACCOUNT_POLYGON,
+    color: process.env.COLOR
+  })
+})
+
+app.get('/polygon/faq', async (req, res) => {
+  await prepareTokenPlatforms()
+  res.render('faq_polygon', {
+    tokenName: process.env.TOKEN_NAME,
+    tokenSymbol: process.env.TOKEN_SYMBOL,
+    tokenDecimals: process.env.HIVE_TOKEN_PRECISION,
+    tokenContractAddress: process.env.POLYGON_CONTRACT_ADDRESS,
+    tokenPlatforms: tokenPlatforms,
+    hiveDepositAddress: process.env.HIVE_ACCOUNT_POLYGON,
+    contactLink: process.env.CONTACT_LINK,
+    color: process.env.COLOR
   })
 })
 

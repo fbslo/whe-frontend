@@ -3,9 +3,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta http-equiv="Content-Language" content="en">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>Wrapped <%= tokenSymbol %></title>
+    <title>BEP20 <%= tokenSymbol %></title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
-    <meta name="description" content="Wrapped <%= tokenSymbol %>">
+    <meta name="description" content="BEP20 <%= tokenSymbol %>">
     <meta name="msapplication-tap-highlight" content="no">
 
     <link rel="apple-touch-icon" sizes="57x57" href="./assets/icons/apple-icon-57x57.png">
@@ -35,10 +35,10 @@
     =========================================================
     * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
     -->
-<link href="./main.css" rel="stylesheet"></head>
+<link href="./main_bsc.css" rel="stylesheet"></head>
 <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
-<script src="./index.js" charset="utf-8"></script>
+<script src="./index_bsc.js" charset="utf-8"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.3.0/web3.min.js" integrity="sha512-ppuvbiAokEJLjOUQ24YmpP7tTaLRgzliuldPRZ01ul6MhRC+B8LzcVkXmUsDee7ne9chUfApa9/pWrIZ3rwTFQ==" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/@hiveio/hive-js/dist/hive.min.js"></script>
 <style>
@@ -118,66 +118,59 @@
                             </button>
                         </span>
                     </div>
-					<div class="scrollbar-sidebar">
-                        <div class="app-sidebar__inner">
-                            <ul class="vertical-nav-menu">
-                              <li class="app-sidebar__heading">Oracle</li>
-              								<li>
-              									<a href="/">
-              									<i class="metismenu-icon fa fa-cogs"></i>
-              									W<%= tokenSymbol %>
-                                </a>
-                            </li>
-                            <li>
-                              <a href="/verify">
-                              <i class="metismenu-icon fa fa-search-dollar"></i>
-                              Verify supply
-                              </a>
-                          </li>
-                          <li>
-                            <a href="/faq">
-                            <i class="metismenu-icon fa fa-question-circle"></i>
-                            FAQ
-                            </a>
-                        </li>
-                          <li>
-                            <a href="https://etherscan.io/address/<%= tokenContractAddress %>" target="_blank">
-                            <i class="metismenu-icon fa fa-file-contract"></i>
-                            Contract
-                            </a>
-                        </li>
-                        <li class="app-sidebar__heading"><%= tokenName %> Platforms</li>
-                          <%- tokenPlatforms %>
-                          <li class="app-sidebar__heading">Ethereum:</li>
-                          <li>
-                          <a href="https://app.uniswap.org/#/swap?outputCurrency=<%= tokenContractAddress %>" target="_blank">
-                          <i class="metismenu-icon fa fa-globe"></i>
-                          Uniswap
+                    <div class="scrollbar-sidebar">
+                                  <div class="app-sidebar__inner">
+                                      <ul class="vertical-nav-menu">
+                                        <li class="app-sidebar__heading">Oracle</li>
+                                        <li>
+                                          <a href="/bsc">
+                                          <i class="metismenu-icon fa fa-cogs"></i>
+                                          b<%= tokenSymbol %>
+                                          </a>
+                                      </li>
+                                      <li>
+                                        <a href="/bsc/verify">
+                                        <i class="metismenu-icon fa fa-search-dollar"></i>
+                                        Verify supply
                                         </a>
                                     </li>
-                          <li>
-                          <a href="https://uniswap.info/token/<%= tokenContractAddress %>" target="_blank">
-                          <i class="metismenu-icon fa fa-info-circle"></i>
-                          Uniswap.info
+                                    <li>
+                                      <a href="/bsc/faq">
+                                      <i class="metismenu-icon fa fa-question-circle"></i>
+                                      FAQ
                                       </a>
                                   </li>
-                          <li class="app-sidebar__heading">Binance Smart Chain:</li>
-                          <li>
-                          <a href="/bsc" target="_blank">
-                          <i class="metismenu-icon fa fa-bolt"></i>
-                          bLEO
-                                        </a>
-                                    </li>
-                          <li class="app-sidebar__heading">Polygon:</li>
-                          <li>
-                          <a href="/polygon" target="_blank">
-                          <i class="metismenu-icon fa fa-bolt"></i>
-                          pLEO
-                                        </a>
-                                    </li>
-              							</ul>
-                        </div>
-                    </div>
+                                    <li>
+                                      <a href="https://bscscan.com/address/<%= tokenContractAddress %>" target="_blank">
+                                      <i class="metismenu-icon fa fa-file-contract"></i>
+                                      Contract
+                                      </a>
+                                  </li>
+                                  <li class="app-sidebar__heading"><%= tokenName %> Platform</li>
+                                    <%- tokenPlatforms %>
+                                    <li class="app-sidebar__heading">Binance Smart Chain:</li>
+                                    <li>
+                                    <a href="https://exchange.pancakeswap.finance/#/swap?outputCurrency=<%= tokenContractAddress %>" target="_blank">
+                                    <i class="metismenu-icon fa fa-globe"></i>
+                                    PancakeSwap
+                                                  </a>
+                                              </li>
+                                    <li>
+                                    <a href="https://pancakeswap.info/token/<%= tokenContractAddress %>" target="_blank">
+                                    <i class="metismenu-icon fa fa-info-circle"></i>
+                                    PancakeSwap.info
+                                                </a>
+                                            </li>
+                                    <li class="app-sidebar__heading">Ethereum:</li>
+                                    <li>
+                                    <a href="/" target="_blank">
+                                    <i class="metismenu-icon fa fa-bolt"></i>
+                                    WLEO
+                                                  </a>
+                                              </li>
+                                      </ul>
+                                  </div>
+                              </div>
                 </div>
 
 				<div class="app-main__outer">
@@ -189,9 +182,9 @@
                         <i class="fa fa-cogs"></i>
                     </div>
                     <div>
-	                     Wrapped <%= tokenSymbol %>
+	                     BEP20 <%= tokenSymbol %>
                       <div class="page-title-subheading">
-		                   The gateway between <%= tokenSymbol %> and ETH.
+		                   The gateway between <%= tokenSymbol %> and BSC.
                       </div>
                     </div>
                     </div>
@@ -202,9 +195,9 @@
 							</div>
 							<div class="col-md-8">
 								<div class="main-card mb-3 card">
-									<div class="card-body"><h4 class="card-title"><%= tokenSymbol %> to w<%= tokenSymbol %></h4>
-										<p>Send your <%= tokenSymbol %> tokens to the Ethereum blockchain and create w<%= tokenSymbol %></p>
-										<p><input name="eth" id="eth" placeholder="Enter your ethereum address" type="text" class="form-control"></p>
+									<div class="card-body"><h4 class="card-title"><%= tokenSymbol %> to b<%= tokenSymbol %></h4>
+										<p>Send your <%= tokenSymbol %> tokens to the Binance Smart Chain blockchain and create b<%= tokenSymbol %></p>
+										<p><input name="eth" id="eth" placeholder="Enter your BSC address" type="text" class="form-control"></p>
                     <div id='invalid_eth_address'></div>
 										<p><button class="mt-1 btn btn-primary" onCLick='isEthereumAddressCorrect()'>Submit</button></p>
 									</div>
@@ -219,8 +212,8 @@
 							</div>
 							<div class="col-md-8">
 								<div class="main-card mb-3 card">
-									<div class="card-body"><h4 class="card-title">w<%= tokenSymbol %> to <%= tokenSymbol %></h4>
-										<p>Send your w<%= tokenSymbol %> to receive <%= tokenSymbol %> tokens</p>
+									<div class="card-body"><h4 class="card-title">b<%= tokenSymbol %> to <%= tokenSymbol %></h4>
+										<p>Send your b<%= tokenSymbol %> to receive <%= tokenSymbol %> tokens</p>
 										<p><input name="hive" id="hive" placeholder="Enter your Hive user name" type="hive" class="form-control"></p>
                     <p><button class="mt-1 btn btn-primary" onClick='displayDetails()'>Submit</button></p>
 									</div>
@@ -234,4 +227,4 @@
 				</div>
         </div>
     </div>
-    <script type="text/javascript" src="./assets/scripts/main.js"></script></body>
+    <script type="text/javascript" src="../assets/scripts/main.js"></script></body>
