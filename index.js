@@ -146,7 +146,8 @@ app.get('/polygon/verify', async (req, res) => {
     tokenContractAddress: process.env.POLYGON_CONTRACT_ADDRESS,
     tokenPlatforms: tokenPlatforms,
     hiveDepositAddress: process.env.HIVE_ACCOUNT_POLYGON,
-    color: process.env.COLOR_POLYGON
+    color: process.env.COLOR_POLYGON,
+    depositAccount: process.env.HIVE_ACCOUNT_POLYGON
   })
 })
 

@@ -35,7 +35,7 @@
     =========================================================
     * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
     -->
-<link href="./main.css" rel="stylesheet"></head>
+<link href="../main.css" rel="stylesheet"></head>
 <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 <script src="./index_polygon.js" charset="utf-8"></script>
@@ -50,7 +50,7 @@
   <div style="display:none;" id='contract'><%= tokenContractAddress %></div>
   <div style="display:none;" id='symbol'><%= tokenSymbol %></div>
   <div style="display:none;" id='tokenDecimals'><%= tokenDecimals %></div>
-  <div style="display:none;" id='function'><%= functionName %></div>
+  <div style="display:none;" id='depositAccount'><%= depositAccount %></div>
     <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
         <div class="app-header bg-danger header-text-light header-shadow">
             <div class="app-header__logo">
@@ -177,7 +177,7 @@
 				<div class="app-main__outer">
           <div class="app-main__inner">
 
-            <div class="row">
+            <!-- <div class="row">
               <div class="col-md-6 col-xl-4">
                   <div class="card mb-3 widget-content">
                       <div class="widget-content-outer">
@@ -192,8 +192,8 @@
                           </div>
                       </div>
                   </div>
-              </div>
-              <div class="col-md-6 col-xl-4">
+              </div> -->
+              <!-- <div class="col-md-6 col-xl-4">
                   <div class="card mb-3 widget-content">
                       <div class="widget-content-outer">
                           <div class="widget-content-wrapper">
@@ -207,8 +207,8 @@
                           </div>
                       </div>
                   </div>
-              </div>
-              <div class="col-md-6 col-xl-4">
+              </div> -->
+              <!-- <div class="col-md-6 col-xl-4">
                   <div class="card mb-3 widget-content">
                       <div class="widget-content-outer">
                           <div class="widget-content-wrapper">
@@ -222,7 +222,7 @@
                           </div>
                       </div>
                   </div>
-              </div>
+              </div> -->
 
 
               <div class="card-body">
@@ -245,7 +245,11 @@
                              <div class="main-card mb-3 card">
                                  <div class="card-body"><h5 class="card-title"></h5>
                                      <ul class="list-group">
-                                         <li class="list-group-item" id='hive_account'>Loading...</li>
+                                         <li class="list-group-item" id='hive_account'>
+                                           <script>
+                                             document.write("<a href='https://hiveblocks.com/@"+document.getElementById("depositAccount").innerText+"'>@"+document.getElementById("depositAccount").innerText+"</a>")
+                                           </script>
+                                         </li>
                                      </ul>
                                  </div>
                              </div>
@@ -259,8 +263,7 @@
                                  <div class="col-md-6">
                                    <div class="main-card mb-3 card">
                                        <div class="card-body"><h5 class="card-title"></h5>
-                                           <ul class="list-group" id='eth_addresses'>
-                                           </ul>
+                                           <li class="list-group-item"><a href="https://polygonscan.com/address/0xf826a91e8de52bc1baf40d88203e572dc2551aa3" target="_blank">0xf826a91e8de52bc1baf40d88203e572dc2551aa3</a></li>
                                        </div>
                                    </div>
                                </div>
