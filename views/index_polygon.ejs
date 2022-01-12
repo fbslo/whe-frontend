@@ -51,6 +51,7 @@
   <div style="display:none;" id='symbol'><%= tokenSymbol %></div>
   <div style="display:none;" id='tokenDecimals'><%= tokenDecimals %></div>
   <div style="display:none;" id='function'><%= functionName %></div>
+  <div style="display:none;" id='depositAccount'><%= depositAccount %></div>
     <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
         <div class="app-header bg-danger header-text-light header-shadow">
             <div class="app-header__logo">
@@ -185,7 +186,7 @@
                     <div>
 	                     Polygon <%= tokenSymbol %>
                       <div class="page-title-subheading">
-		                   The gateway between <%= tokenSymbol %> and polygon.
+		                   The gateway between <%= tokenSymbol %> and Polygon.
                       </div>
                     </div>
                     </div>
@@ -196,8 +197,8 @@
 							</div>
 							<div class="col-md-8">
 								<div class="main-card mb-3 card">
-									<div class="card-body"><h4 class="card-title"><%= tokenSymbol %> to b<%= tokenSymbol %></h4>
-										<p>Send your <%= tokenSymbol %> tokens to the Binance Smart Chain blockchain and create b<%= tokenSymbol %></p>
+									<div class="card-body"><h4 class="card-title"><%= tokenSymbol %> to p<%= tokenSymbol %></h4>
+										<p>Send your <%= tokenSymbol %> tokens to the Binance Smart Chain blockchain and create p<%= tokenSymbol %></p>
 										<p><input name="eth" id="eth" placeholder="Enter your polygon address" type="text" class="form-control"></p>
                     <div id='invalid_eth_address'></div>
 										<p><button class="mt-1 btn btn-primary" onCLick='isEthereumAddressCorrect()'>Submit</button></p>
@@ -213,8 +214,8 @@
 							</div>
 							<div class="col-md-8">
 								<div class="main-card mb-3 card">
-									<div class="card-body"><h4 class="card-title">b<%= tokenSymbol %> to <%= tokenSymbol %></h4>
-										<p>Send your b<%= tokenSymbol %> to receive <%= tokenSymbol %> tokens</p>
+									<div class="card-body"><h4 class="card-title">p<%= tokenSymbol %> to <%= tokenSymbol %></h4>
+										<p>Send your p<%= tokenSymbol %> to receive <%= tokenSymbol %> tokens</p>
 										<p><input name="hive" id="hive" placeholder="Enter your Hive user name" type="hive" class="form-control"></p>
                     <p><button class="mt-1 btn btn-primary" onClick='displayDetails()'>Submit</button></p>
 									</div>

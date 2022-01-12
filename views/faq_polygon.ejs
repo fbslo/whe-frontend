@@ -35,7 +35,7 @@
     =========================================================
     * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
     -->
-<link href="./main.css" rel="stylesheet"></head>
+<link href="../main.css" rel="stylesheet"></head>
 <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 <script src="./index_polygon.js" charset="utf-8"></script>
@@ -50,7 +50,6 @@
   <div style="display:none;" id='contract'><%= tokenContractAddress %></div>
   <div style="display:none;" id='symbol'><%= tokenSymbol %></div>
   <div style="display:none;" id='tokenDecimals'><%= tokenDecimals %></div>
-  <div style="display:none;" id='function'><%= functionName %></div>
     <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
         <div class="app-header bg-danger header-text-light header-shadow">
             <div class="app-header__logo">
@@ -201,7 +200,7 @@
                             </button>
                         </div>
                         <div data-parent="#accordion" id="collapseOne1" aria-labelledby="headingOne" class="collapse show">
-                            <div class="card-body">Polygon <%= tokenSymbol %> (p<%= tokenSymbol %>) is an Polygon token that represents <%= tokenSymbol %> token. Each w<%= tokenSymbol %> is backed by real <%= tokenSymbol %> and can be converted back to <%= tokenSymbol %> at any time.</div>
+                            <div class="card-body">Polygon <%= tokenSymbol %> (p<%= tokenSymbol %>) is an Polygon token that represents <%= tokenSymbol %> token. Each p<%= tokenSymbol %> is backed by real <%= tokenSymbol %> and can be converted back to <%= tokenSymbol %> at any time.</div>
                         </div>
                     </div>
                     <div class="card">
@@ -215,10 +214,10 @@
                     </div>
                     <div class="card">
                         <div id="headingFive" class="b-radius-0 card-header">
-                            <button type="button" data-toggle="collapse" data-target="#collapseOne5" aria-expanded="false" aria-controls="collapseTwo" class="text-left m-0 p-0 btn btn-link btn-block"><h5 class="m-0 p-0">How can I convert W<%= tokenSymbol %> to <%= tokenSymbol %>?</h5></button>
+                            <button type="button" data-toggle="collapse" data-target="#collapseOne5" aria-expanded="false" aria-controls="collapseTwo" class="text-left m-0 p-0 btn btn-link btn-block"><h5 class="m-0 p-0">How can I convert p<%= tokenSymbol %> to <%= tokenSymbol %>?</h5></button>
                         </div>
                         <div data-parent="#accordion" id="collapseOne5" class="collapse">
-                            <div class="card-body">To receive <%= tokenSymbol %>, enter your Hive username into "b<%= tokenSymbol %> to <%= tokenSymbol %>" form (front page). You will need MetaMask to interact with smart contract.
+                            <div class="card-body">To receive <%= tokenSymbol %>, enter your Hive username into "p<%= tokenSymbol %> to <%= tokenSymbol %>" form (front page). You will need MetaMask to interact with smart contract.
                             </div>
                         </div>
                     </div>

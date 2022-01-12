@@ -132,7 +132,8 @@ app.get('/polygon', async (req, res) => {
     tokenContractAddress: process.env.POLYGON_CONTRACT_ADDRESS,
     tokenPlatforms: tokenPlatforms,
     color: process.env.COLOR_POLYGON,
-    functionName: process.env.ETHEREUM_CONTRACT_FUNCTION
+    functionName: process.env.ETHEREUM_CONTRACT_FUNCTION,
+    depositAccount: process.env.HIVE_ACCOUNT_POLYGON
   })
 })
 
