@@ -51,7 +51,7 @@ app.get('/', async (req, res) => {
     tokenDecimals: process.env.HIVE_TOKEN_PRECISION,
     tokenContractAddress: process.env.ETHEREUM_CONTRACT_ADDRESS,
     tokenPlatforms: tokenPlatforms,
-    color: process.env.COLOR,
+    color: process.env.COLOR_ETH,
     functionName: process.env.ETHEREUM_CONTRACT_FUNCTION
   })
 })
@@ -65,7 +65,7 @@ app.get('/verify', async (req, res) => {
     tokenContractAddress: process.env.ETHEREUM_CONTRACT_ADDRESS,
     tokenPlatforms: tokenPlatforms,
     hiveDepositAddress: process.env.HIVE_ACCOUNT,
-    color: process.env.COLOR
+    color: process.env.COLOR_ETH
   })
 })
 
@@ -79,7 +79,7 @@ app.get('/faq', async (req, res) => {
     tokenPlatforms: tokenPlatforms,
     hiveDepositAddress: process.env.HIVE_ACCOUNT,
     contactLink: process.env.CONTACT_LINK,
-    color: process.env.COLOR
+    color: process.env.COLOR_ETH
   })
 })
 
@@ -91,7 +91,7 @@ app.get('/bsc', async (req, res) => {
     tokenDecimals: process.env.HIVE_TOKEN_PRECISION,
     tokenContractAddress: process.env.BSC_CONTRACT_ADDRESS,
     tokenPlatforms: tokenPlatforms,
-    color: process.env.COLOR,
+    color: process.env.COLOR_BSC,
     functionName: process.env.ETHEREUM_CONTRACT_FUNCTION
   })
 })
@@ -105,7 +105,7 @@ app.get('/bsc/verify', async (req, res) => {
     tokenContractAddress: process.env.BSC_CONTRACT_ADDRESS,
     tokenPlatforms: tokenPlatforms,
     hiveDepositAddress: process.env.HIVE_ACCOUNT_BSC,
-    color: process.env.COLOR
+    color: process.env.COLOR_BSC
   })
 })
 
@@ -119,7 +119,7 @@ app.get('/bsc/faq', async (req, res) => {
     tokenPlatforms: tokenPlatforms,
     hiveDepositAddress: process.env.HIVE_ACCOUNT_BSC,
     contactLink: process.env.CONTACT_LINK,
-    color: process.env.COLOR
+    color: process.env.COLOR_BSC
   })
 })
 
@@ -131,7 +131,7 @@ app.get('/polygon', async (req, res) => {
     tokenDecimals: process.env.HIVE_TOKEN_PRECISION,
     tokenContractAddress: process.env.POLYGON_CONTRACT_ADDRESS,
     tokenPlatforms: tokenPlatforms,
-    color: process.env.COLOR,
+    color: process.env.COLOR_POLYGON,
     functionName: process.env.ETHEREUM_CONTRACT_FUNCTION
   })
 })
@@ -145,7 +145,7 @@ app.get('/polygon/verify', async (req, res) => {
     tokenContractAddress: process.env.POLYGON_CONTRACT_ADDRESS,
     tokenPlatforms: tokenPlatforms,
     hiveDepositAddress: process.env.HIVE_ACCOUNT_POLYGON,
-    color: process.env.COLOR
+    color: process.env.COLOR_POLYGON
   })
 })
 
@@ -159,7 +159,7 @@ app.get('/polygon/faq', async (req, res) => {
     tokenPlatforms: tokenPlatforms,
     hiveDepositAddress: process.env.HIVE_ACCOUNT_POLYGON,
     contactLink: process.env.CONTACT_LINK,
-    color: process.env.COLOR
+    color: process.env.COLOR_POLYGON
   })
 })
 
