@@ -165,6 +165,10 @@ app.get('/polygon/faq', async (req, res) => {
   })
 })
 
+app.get('/hbd', async (req, res) => {
+  res.render('hbd/hbd')
+})
+
 app.use('/price', require('./api/price.js'))
 app.use('/status', require('./api/status.js'));
 
