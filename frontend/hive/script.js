@@ -21,7 +21,7 @@ function wrap(){
 	let error = false
 
 	if (amount < 1){
-		alert("Amount should be more than 1 HBD!");
+		alert("Amount should be more than 1 HIVE!");
 		error = true;
 	}
 	if (!web3.utils.isAddress(addressTo)){
@@ -31,11 +31,11 @@ function wrap(){
 
 	if (!error){
 		if(window.hive_keychain) {
-			window.hive_keychain.requestTransfer(hiveAccountFrom, "p-hbd", parseFloat(amount).toFixed(3), addressTo, "HBD", () => {
+			window.hive_keychain.requestTransfer(hiveAccountFrom, "p-hive", parseFloat(amount).toFixed(3), addressTo, "HIVE", () => {
 				console.log('Request sent!', amount);
 			}, false);
 		} else {
-			alert("Send "+parseFloat(amount).toFixed(3)+" HBD to @p-hbd with memo: " + addressTo)
+			alert("Send "+parseFloat(amount).toFixed(3)+" HIVE to @p-hive with memo: " + addressTo)
 		}
 	}
 }
@@ -53,7 +53,7 @@ async function unwrap(){
 	hive.api.getAccounts([hiveAddressTo], async function(err, response){
   	if (response.length == 0) alert("invalid Hive username!")
 		else {
-			let contract = '0x6d969cea201e427d2875724fd4e8044833fbc7f4'
+			let contract = '0xb8407211a6e89c34ddea4774e1c3c557f6b26e27'
 			let contractObject = new web3.eth.Contract(ABI, contract);
 			let contractFunction = await contractObject.methods['convertTokenWithTransfer'](amount, hiveAddressTo).encodeABI(); //multiply by 10**3 to remove decimal places
 
