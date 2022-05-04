@@ -16,7 +16,7 @@ toPolygon.addEventListener('click', () => {
 function wrap(){
 	let addressTo = document.getElementById("polygon_address").value
 	let amount = document.getElementById("hive_amount").value
-	let hiveAccountFrom = window.prompt("Your hive username","default");
+	let hiveAccountFrom = window.prompt("Your hive username");
 
 	let error = false
 
