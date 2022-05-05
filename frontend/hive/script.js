@@ -16,7 +16,7 @@ toPolygon.addEventListener('click', () => {
 function wrap(){
 	let addressTo = document.getElementById("polygon_address").value
 	let amount = document.getElementById("hive_amount").value
-	let hiveAccountFrom = window.prompt("Your hive username");
+	let hiveAccountFrom = window.prompt("Your hive username"h);
 
 	let error = false
 
@@ -53,7 +53,7 @@ async function unwrap(){
 	hive.api.getAccounts([hiveAddressTo], async function(err, response){
   	if (response.length == 0) alert("invalid Hive username!")
 		else {
-			let contract = '0xb8407211a6e89c34ddea4774e1c3c557f6b26e27'
+			let contract = '0x456320e9b87a7c84a53b8ab300067f3a29aab301'
 			let contractObject = new web3.eth.Contract(ABI, contract);
 			let contractFunction = await contractObject.methods['convertTokenWithTransfer'](amount, hiveAddressTo).encodeABI(); //multiply by 10**3 to remove decimal places
 
