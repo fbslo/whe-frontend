@@ -173,6 +173,10 @@ app.get('/hive', async (req, res) => {
   res.render('hive/hive')
 })
 
+app.get('/sps', async (req, res) => {
+  res.render('sps/sps')
+})
+
 app.use('/price', require('./api/price.js'))
 app.use('/status', require('./api/status.js'));
 
