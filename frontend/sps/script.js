@@ -36,7 +36,7 @@ function wrap(){
 				contractPayload: {
 					symbol: 'SPS',
 					to: 'p-sps',
-					quantity: parseFloat(amount).toFixed(3),
+					quantity: parseFloat(amount).toFixed(8),
 					memo: addressTo
 				}
 			}
@@ -45,7 +45,7 @@ function wrap(){
 				console.log(response);
 			})
 		} else {
-			alert("Send "+parseFloat(amount).toFixed(3)+" SPS to @p-sps with memo: " + addressTo)
+			alert("Send "+parseFloat(amount).toFixed(8)+" SPS to @p-sps with memo: " + addressTo)
 		}
 	}
 }
@@ -54,7 +54,7 @@ function wrap(){
 async function unwrap(){
 	let address = await connectMetamask()
 	let hiveAddressTo = document.getElementById("hive_address").value
-	let amount = parseFloat(document.getElementById("polygon_amount").value * 1000).toFixed(0)
+	let amount = parseFloat(document.getElementById("polygon_amount").value * 100000000).toFixed(0)
 
 	if (parseInt(ethereum.chainId, 16)  != 137 || ethereum.chainId != 137){
 		alert("Switch to Polygon mainnet! Current chain ID: " + ethereum.chainId)
