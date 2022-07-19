@@ -25,7 +25,7 @@ function wrap(){
 		error = true;
 	}
 	if (!web3.utils.isAddress(addressTo)){
-		alert("Invalid Polygon address!");
+		alert("Invalid BNB Smart Chain address!");
 		error = true;
 	}
 
@@ -46,8 +46,8 @@ async function unwrap(){
 	let hiveAddressTo = document.getElementById("hive_address").value
 	let amount = parseFloat(document.getElementById("polygon_amount").value * 1000).toFixed(0)
 
-	if (parseInt(ethereum.chainId, 16)  != 137 || ethereum.chainId != 137){
-		alert("Switch to Polygon mainnet! Current chain ID: " + ethereum.chainId)
+	if (parseInt(ethereum.chainId, 16)  != 56 || ethereum.chainId != 56){
+		alert("Switch to BNB Smart Chain mainnet! Current chain ID: " + ethereum.chainId)
 	}
 
 	hive.api.getAccounts([hiveAddressTo], async function(err, response){

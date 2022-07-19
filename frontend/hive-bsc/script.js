@@ -46,7 +46,7 @@ async function unwrap(){
 	let hiveAddressTo = document.getElementById("hive_address").value
 	let amount = parseFloat(document.getElementById("polygon_amount").value * 1000).toFixed(0)
 
-	if (parseInt(ethereum.chainId, 16)  != 56 || ethereum.chainId != 137){
+	if (parseInt(ethereum.chainId, 16)  != 56 || ethereum.chainId != 56){
 		alert("Switch to BNB Smart Chain mainnet! Current chain ID: " + ethereum.chainId)
 	}
 

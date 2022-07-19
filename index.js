@@ -181,6 +181,10 @@ app.get('/hive-bsc', async (req, res) => {
   res.render('hive-bsc/hive')
 })
 
+app.get('/hbd-bsc', async (req, res) => {
+  res.render('hbd-bsc/hbd')
+})
+
 app.use('/price', require('./api/price.js'))
 app.use('/status', require('./api/status.js'));
 
