@@ -24,7 +24,7 @@ function wrap(){
 		error = true;
 	}
 	if (!web3.utils.isAddress(addressTo)){
-		alert("Invalid Polygon address!");
+		alert("Invalid Ethereum address!");
 		error = true;
 	}
 
@@ -35,7 +35,7 @@ function wrap(){
 				contractAction: 'transfer',
 				contractPayload: {
 					symbol: 'LEO',
-					to: 'p-leo',
+					to: 'wrapped-leo',
 					quantity: parseFloat(amount).toFixed(3),
 					memo: addressTo
 				}
@@ -45,7 +45,7 @@ function wrap(){
 				console.log(response);
 			})
 		} else {
-			alert("Send "+parseFloat(amount).toFixed(3)+" LEO to @p-leo with memo: " + addressTo)
+			alert("Send "+parseFloat(amount).toFixed(3)+" LEO to @wrapped-leo with memo: " + addressTo)
 		}
 	}
 }
@@ -57,13 +57,13 @@ async function unwrap(){
 	let amount = parseFloat(document.getElementById("polygon_amount").value * 1000).toFixed(0)
 
 	if (parseInt(ethereum.chainId, 16)  != 137 || ethereum.chainId != 137){
-		alert("Switch to Polygon mainnet! Current chain ID: " + ethereum.chainId)
+		alert("Switch to Ethereum mainnet! Current chain ID: " + ethereum.chainId)
 	}
 
 	hive.api.getAccounts([hiveAddressTo], async function(err, response){
   	if (response.length == 0) alert("invalid Hive username!")
 		else {
-			let contract = '0x73A9fb46e228628f8f9BB9004eCa4f4F529D3998'
+			let contract = '0xf826a91e8de52bc1baf40d88203e572dc2551aa3'
 			let contractObject = new web3.eth.Contract(ABI, contract);
 			let contractFunction = await contractObject.methods['convertTokenWithTransfer'](amount, hiveAddressTo).encodeABI(); //multiply by 10**3 to remove decimal places
 
@@ -72,7 +72,7 @@ async function unwrap(){
 				to: contract, // Required except during contract publications.
 				from: address, // must match user's active address.
 				data: contractFunction, // Optional, but used for defining smart contract creation and interaction.
-				chainId: 137, // Used to prevent transaction reuse across blockchains. Auto-filled by MetaMask.
+				chainId: 1, // Used to prevent transaction reuse across blockchains. Auto-filled by MetaMask.
 				gas: '0x30d40'
 			};
 

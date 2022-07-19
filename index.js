@@ -41,16 +41,20 @@ app.get('/leo-bsc', async (req, res) => {
   res.render('leo-bsc/leo')
 })
 
-app.get('/hbd', async (req, res) => {
-  res.render('hbd/hbd')
+app.get('/leo-polygon', async (req, res) => {
+  res.render('leo-polygon/leo')
 })
 
-app.get('/hive', async (req, res) => {
-  res.render('hive/hive')
+app.get('/hbd-polygon', async (req, res) => {
+  res.render('hbd-polygon/hbd')
 })
 
-app.get('/sps', async (req, res) => {
-  res.render('sps/sps')
+app.get('/hive-polygon', async (req, res) => {
+  res.render('hive-polygone/hive')
+})
+
+app.get('/sps-polygon', async (req, res) => {
+  res.render('sps-polygon/sps')
 })
 
 app.get('/hive-bsc', async (req, res) => {
@@ -60,5 +64,12 @@ app.get('/hive-bsc', async (req, res) => {
 app.get('/hbd-bsc', async (req, res) => {
   res.render('hbd-bsc/hbd')
 })
+
+app.get("/wleo", (req, res) => { res.redirect(301, "/leo-ethereum") })
+app.get("/bleo", (req, res) => { res.redirect(301, "/leo-bsc") })
+app.get("/polygon", (req, res) => { res.redirect(301, "/leo-polygon") })
+app.get("/hbd", (req, res) => { res.redirect(301, "/hbd-polygon") })
+app.get("/hive", (req, res) => { res.redirect(301, "/hive-polygon") })
+app.get("/sps", (req, res) => { res.redirect(301, "/sps-polygon") })
 
 app.listen(8080)
