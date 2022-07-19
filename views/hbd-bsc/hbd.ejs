@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <script src="./ABI.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@hiveio/hive-js/dist/hive.min.js"></script>
-    <title>Polygon SPS Bridge</title>
-    <link rel="icon" href="./sps.png" sizes="any">
+    <title>BNB Smart Chain HBD Bridge</title>
+    <link rel="icon" href="./hbd.png" sizes="any">
     <link rel="stylesheet" href="./style.css">
     <script src="./web3.js"></script>
     <script src="./axios.js"></script>
@@ -14,19 +14,19 @@
   <div class="container" id="container">
   	<div class="form-container sign-in-container">
   		<form>
-  			<h1>Hive Engine to Polygon</h1>
+  			<h1>Hive to BNB Smart Chain</h1>
   			<div class="social-container"></div>
-  			<span>Transfer native SPS tokens to Polygon.</span>
-  			<input type="text" placeholder="Receiving Polygon address"  id='polygon_address'/>
+  			<span>Transfer native HBD to BNB Smart Chain.</span>
+  			<input type="text" placeholder="Receiving BSC address"  id='polygon_address'/>
   			<input type="text" placeholder="Amount" id='hive_amount'/>
   			<button type="button" class='hive' onclick="wrap()">Transfer</button>
   		</form>
   	</div>
   	<div class="form-container sign-up-container">
   		<form>
-  			<h1>Polygon to Hive Engine</h1>
+  			<h1>BNB Smart Chain to Hive</h1>
         <div class="social-container"></div>
-  			<span>Transfer pSPS back to Hive Engine.</span>
+  			<span>Transfer bHBD back to Hive.</span>
   			<input type="text" placeholder="Hive username" id='hive_address'/>
         <input type="text" placeholder="Amount" id='polygon_amount'/>
         <div><button type="button" onclick="unwrap()">Transfer</button></div>
@@ -36,13 +36,13 @@
   	<div class="overlay-container">
   		<div class="overlay">
   			<div class="overlay-panel overlay-left">
-  				<h1>SPS Bridge</h1>
-          <p>Transfer pSPS tokens back to Hive Engine.<br><br><small>Bridge operated by <a href="https://leofinance.io" target="_blank">LeoFinance</a><br><sub>Fees: 0.25%</sub></small></p>
+  				<h1>HBD Bridge</h1>
+          <p>Transfer bHBD tokens back to Hive.<br><br><small>Bridge operated by <a href="https://leofinance.io" target="_blank">LeoFinance</a><br><sub>Fees: 0.25%</sub></small></p>
   				<button class="ghost" id="to_polygon">Or to Polygon</button>
   			</div>
   			<div class="overlay-panel overlay-right">
-  				<h1>SPS Bridge</h1>
-  				<p>Transfer native SPS coins to Polygon L2.<br><br><small>Bridge operated by <a href="https://leofinance.io" target="_blank">LeoFinance</a><br><sub>Fees: 0.25%</sub></small></p>
+  				<h1>HBD Bridge</h1>
+  				<p>Transfer native HBD coins to BNB Smart Chain.<br><br><small>Bridge operated by <a href="https://leofinance.io" target="_blank">LeoFinance</a><br><sub>Fees: 0.25%</sub></small></p>
   				<button class="ghost" id="to_hive">Or transfer them back</button>
   			</div>
   		</div>
