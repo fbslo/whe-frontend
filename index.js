@@ -33,10 +33,13 @@ app.get('/', async (req, res) => {
   res.render('index/index')
 })
 
-app.get('/faq', async (req, res) => {
-  res.render('faq/faq')
+app.get('/leo-ethereum', async (req, res) => {
+  res.render('leo-ethereum/leo')
 })
 
+app.get('/leo-bsc', async (req, res) => {
+  res.render('leo-bsc/leo')
+})
 
 app.get('/hbd', async (req, res) => {
   res.render('hbd/hbd')
